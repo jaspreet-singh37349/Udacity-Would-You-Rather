@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
@@ -9,8 +9,9 @@ import Navbar from './components/Navbar'
 import Login from './components/Login'
 import Home from './components/Home'
 import NewQuestion from './components/NewQuestion'
-import { handleInitialData } from './actions/shared';
-import Loading from './components/Loading';
+import { handleInitialData } from './actions/shared'
+import Loading from './components/Loading'
+import PrivateRoute from './components/privateRoute'
 
 class App extends Component {
   componentDidMount() {
@@ -20,20 +21,23 @@ class App extends Component {
    }
   }
   render() {
-    if(this.props.loading){
+
+    const {loading, auth} = this.props
+
+    if(loading){
       return(
         <Loading />
       )
     }
     return (
     <Router>
-        {this.props.authedUser? <Navbar/>:null}
+        <Navbar/>
         <Switch>
-          <Route exact path='/' component={Home} />
+          <PrivateRoute exact path='/' component={Home} auth={auth} />
           <Route exact path='/login' component={Login} />
-          <Route exact path='/add' component={NewQuestion} />
-          <Route exact path='/questions/:question_id' component={Votes} />
-          <Route exact path='/leaderboard' component={LeaderBoard} />
+          <PrivateRoute exact path='/add' component={NewQuestion} auth={auth} />
+          <PrivateRoute exact path='/questions/:question_id' component={Votes} auth={auth} />
+          <PrivateRoute exact path='/leaderboard' component={LeaderBoard} auth={auth} />
           <Route path="*" component={Error}/>
         </Switch>
     </Router>
@@ -45,7 +49,8 @@ function mapStateToProps({users,authedUser}) {
 
   return {
     loading: Object.keys(users).length!==0?false:true,
-    authedUser
+    authedUser,
+    auth:authedUser?true:false
   }
 }
 

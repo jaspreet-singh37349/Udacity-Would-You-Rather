@@ -32,12 +32,12 @@ class Home extends Component {
                     <Row style={{margin:"20px"}}>
                         <Col sm="6">
                             <center>
-                                <Button value="0" outline color="primary" onClick={(e)=>{this.handleTab(true)}} style={{align:"center",width:"300px"}}>UnAnswered</Button>{' '}
+                                <Button active={this.state.Qtype} outline color="primary" onClick={(e)=>{this.handleTab(true)}} style={{align:"center",width:"300px"}}>UnAnswered</Button>{' '}
                             </center>
                         </Col>
                         <Col sm="6">
                             <center>
-                                <Button value="1" outline color="primary" onClick={(e)=>{this.handleTab(false)}} style={{align:"center",width:"300px"}}>Answered</Button>{' '}
+                                <Button active={!this.state.Qtype} outline color="primary" onClick={(e)=>{this.handleTab(false)}} style={{align:"center",width:"300px"}}>Answered</Button>{' '}
                             </center>
                         </Col>
                     </Row>

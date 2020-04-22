@@ -31,7 +31,7 @@ class Cardd extends Component {
                           <p style={{marginTop:"10px"}}>{Qdesc}</p>
                           <p>or...</p>
                         </center>
-                        <Link style={{textDecoration:"none"}} to={{pathname:"/questions/"+id,id:id}}>
+                        <Link style={{textDecoration:"none"}} to={`/questions/${id}`}>
                             <Button style={{marginTop:"10px"}} color="success" size="lg" block>View Poll</Button>
                         </Link>
                       </div>

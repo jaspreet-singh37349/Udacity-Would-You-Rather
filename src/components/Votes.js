@@ -3,6 +3,7 @@ import {Card, CardHeader, Row, Col, CardImg, Button,Progress} from 'reactstrap'
 import { connect } from 'react-redux'
 import { handleAddAnswer } from '../actions/shared';
 import { Redirect } from 'react-router-dom'
+import Error from './Error'
 
 class Votes extends Component {
     state = {
@@ -32,15 +33,17 @@ class Votes extends Component {
     }
 
     render() {
-        const {error,authedUser,userName,userImg,question,ans} = this.props
+        const {error} = this.props
         //alert(this.props.location.id)
         if(error) {
             return (
                 <div>
-                    <Redirect to="/login"/>
+                    <Error />
                 </div>
             )
         }
+
+        const {authedUser,userName,userImg,question,ans} = this.props
     
         let Votes1 = question.optionOne.votes.length
         let Votes2 = question.optionTwo.votes.length
@@ -115,15 +118,16 @@ class Votes extends Component {
     }
 }
 
-function mapStateToProps({authedUser, questions, users},{location}) {
-    if(questions[location.id] === undefined) {
+function mapStateToProps({authedUser, questions, users},{match}) {
+    const Qid=match.params.question_id
+    if(questions[Qid] === undefined) {
         const error = true;
         return {
             error
         }
     }
-    const userName = users[questions[location.id].author].name
-    const question = questions[location.id]
+    const userName = users[questions[Qid].author].name
+    const question = questions[Qid]
 
     let ans=''
     if(question.optionOne.votes.includes(authedUser)) {
@@ -136,7 +140,7 @@ function mapStateToProps({authedUser, questions, users},{location}) {
     const userImg = users[question.author].avatarURL
     const error = false
     return {
-        id:location.id,
+        id:Qid,
         question,
         ans,
         authedUser,

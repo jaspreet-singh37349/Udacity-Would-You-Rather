@@ -21,7 +21,7 @@ class Navbarr extends Component {
     }
 
     render() {
-        const {userName,userImg} = this.props
+        const {userName,userImg,authedUser} = this.props
         return(
             <Navbar color="light" light expand="md">
                 <NavbarToggler onClick={this.toggle} />
@@ -37,13 +37,11 @@ class Navbarr extends Component {
                         <NavLink activeClassName='active' style={{textDecoration:"none"}} to="/leaderboard">LeaderBoard</NavLink>
                     </NavItem>
                 </Nav>
-                <NavItem>
+                {authedUser && <NavItem>
                     Hello, {userName}
                     <img style={{height:"30px",borderRadius:"50%"}} src={userImg} alt="error"/>
-                </NavItem>
-                <NavItem>
-                        <NavLink onClick={this.handleLogout} style={{textDecoration:"none"}} to="/login">LogOut</NavLink>
-                </NavItem>
+                    <NavLink onClick={this.handleLogout} style={{textDecoration:"none"}} to="/login">LogOut</NavLink>
+                </NavItem>}
                 </Collapse>
             </Navbar>
         )
@@ -53,8 +51,8 @@ class Navbarr extends Component {
 function mapStateToProps ({authedUser,users}) {
     return {
         authedUser,
-        userName:users[authedUser].name,
-        userImg:users[authedUser].avatarURL
+        userName:authedUser && users[authedUser].name,
+        userImg:authedUser && users[authedUser].avatarURL
     }
 }
 
